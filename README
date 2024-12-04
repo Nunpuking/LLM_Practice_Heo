@@ -1,0 +1,34 @@
+This is README description for DongNyeong Heo's Huggingface LLM praticing code.
+
+This repo. provides fine-tuning for Wikitext2 dataset based on GPT Neo 1.3B, Llama3 3.2B pre-trained models.
+
+
+Training command:
+- bash my_wiki2_clm_run_ds.sh $GPU_NUMS $NUM_GPUS
+
+- (Important) Configurations
+--- FINETUNE_METHOD : full fine-tuning (FFT) or Low Rank Adaptation (LoRA). I recommend LoRA because it significantly reduces required memory.
+--- model_name_or_path : pre-trained model name. You can set your own pre-trained model's diretory or you can search public one from https://huggingface.co/models
+--- data_path : your dataset directory. You don't need to specify it if you use Wikitext2. Otherwise, set this argument, and make preprocessing function by yourself. Refer to 'my_load_dataset.py'. AIHUB dataset is my practicing custom dataset referenced from Korea goverment's AIHUB.
+--- deepspeed : mode of deepspeed multi-gpu run. Check pre-defined configurations in '/deepspeed_configs/'. Training speed: zero2 > zero2_offload > zero3 > zero3_offload. But the requied memory is the opposite. I recommend keep using zero2_offload. But if your GPU memory is over, try zero3 or zero3_offload.
+--- per_device_train_batsize : batch size for a GPU machine. The total batchsize is 'world_size * per_device_train_batch_size * gradient_accumulation_steps'
+--- gradient_accumulation_steps : '1' means model updates at every iteration. '2' means model updates with '2' iteration interval.
+
+
+Testing command:
+- python3 my_pt_dataset_ppl_run.py
+
+- Configuraitons (You need to set the configurations at the beginning of the python script)
+--- max_length: maximum length that model inputs. data_sample longer than max_length is divided as several chunks.
+--- data_path: a specified data_directory (you don't need to specify it, if you use Wikitext2)
+--- model_path: if you used 'FFT' method, set your own fine-tuned model (ex: "./my_clm_finetune_results/checkpoint-9180"). If you used 'LoRA' method, set your pre-trained model (ex: ""meta-llama/Llama-3.2-3B"")
+--- pt_model_dir: if you used 'FFT' method, set to None. If you used 'LoRA' method, set your fine-tuned model (ex: "./my_clm_finetune_results/checkpoint-9180")
+
+
+Files:
+- my_clm_finetune_wiki2.py : python script that contains whole training process. Refer to comments I left.
+- my_load_dataset.py : python script that contains preprocessing of raw_dataset. Finally, each preprocessing should outcome train/valid/test datasets which are pytorch's 'Dataset' object.
+- my_pt_dataset_ppl_run.py : python script that conducts whole testing process. It is recommended to use 'fixed-length iteration script' which is standard.
+- my_pt_generate.py : python script that conducts whole generation process with specified LLM model.
+
+* I used 'Neptune AI' for all loggings. If you want to use Wandb, I recommend refer other example code in web. But I guess it will be not very difficult.

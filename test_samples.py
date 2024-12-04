@@ -1,0 +1,10 @@
+sentences = []
+sentences.append("숲해설가 직무교육 참여동기와")
+sentences.append("Construction and Characterization of Full-Length cDNA Library and Expressed")
+sentences.append("Phylogenetic analysis and biological characterization of Stemphylium")
+sentences.append("Empirical Study of Multimodal Transport Route Choice Model in Freight")
+sentences.append("섬진강 중·상류 수계에서 붕어 개체군의")
+sentences.append("중요생물다양성지역(KBAs) 기준 적용을 통한")
+sentences.append("Intraspecific genetic variation in Corynandra chelidonii (Angiosperms:")
+sentences.append("완충제와 계면활성제가 강화된 가식성 Flavor의 첨가가 거세한우의 사료섭취량, ")
+sentences.append("셀룰로오스 나노피브릴 현탁액의 탈수성 평가 및")
